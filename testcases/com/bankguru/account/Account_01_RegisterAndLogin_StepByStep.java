@@ -8,6 +8,8 @@ public class Account_01_RegisterAndLogin_StepByStep {
   @Test
   public void TC_01() {
   }
+  public void TC_02() {
+  }
   @BeforeClass
   public void beforeClass() {
   }
