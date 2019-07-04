@@ -2,7 +2,7 @@
 <suite name="BANKGURU" parallel="false">
   <test name="Test">
     <classes>
-      <class name="com.bankguru.account.Account_01_RegisterAndLogin_StepByStep"/>
+      <class name="com.bankguru.account.Account_01_RegisterAndLogin_PageOnjectPattern"/>
     </classes>
   </test> 
 </suite>
