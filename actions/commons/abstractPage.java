@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -67,10 +68,10 @@ public class abstractPage {
 		element.click();
 	}
 
-	public void clickToElement(WebDriver driver, String locator, String value) {
+	/*public void clickToElement(WebDriver driver, String locator, String value) {
 		element = driver.findElement(By.xpath(locator));
 		element.sendKeys(value);
-	}
+	}*/
 
 	public void selectItemInDropdown(WebDriver driver, String locator, String itemText) {
 		element = driver.findElement(By.xpath(locator));
@@ -122,6 +123,7 @@ public class abstractPage {
 
 	public String getTextElement(WebDriver driver, String locator) {
 		element = driver.findElement(By.xpath(locator));
+		System.out.println("actual text :" + element.getText());
 		return element.getText();
 	}
 
@@ -350,6 +352,16 @@ public class abstractPage {
 		waitExplicit.until(ExpectedConditions.alertIsPresent());
 	}
 
+	public void senkeyTab(WebDriver driver, String locator) {
+		element = driver.findElement(By.xpath(locator));
+		element.sendKeys(Keys.TAB);
+	}
+	
+	public void clearDataInput(WebDriver driver, String locator) {
+		element = driver.findElement(By.xpath(locator));
+		element.clear();
+	}
+	
 	WebDriverWait waitExplicit;
 	WebElement element;
 	List<WebElement> elements;
