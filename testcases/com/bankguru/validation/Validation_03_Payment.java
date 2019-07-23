@@ -260,6 +260,28 @@ public class Validation_03_Payment {
 		Assert.assertTrue(editAccount.isDeleteAccountNotExistMessageDisplay("Account does not exist"));
 		homePage = editAccount.acceptDeleteAccount3();
 	}
+	
+	@Test
+	public void TC_10_DeleteCustomerAccount() {
+		loginPage = registerPage.openLoginPageUrl(LoginPageUrl);
+		loginPage.inputToUserIdTextbox(username);
+		loginPage.inputPasswordTextbox(password);
+		homePage = loginPage.clickToLoginButton();
+		
+		deleteCustomerPage = homePage.clickToDeleteCustomerPage();
+		deleteCustomerPage.inputIntoCustomerIdTextbox(getTextCustomerID);
+		deleteCustomerPage.clickToSubmitButton();
+		deleteCustomerPage.acceptAlertDeleteCustomerId();
+		Assert.assertTrue(deleteCustomerPage.isDeleteCustomerMessageDisplay("Customer deleted Successfully"));
+		homePage = deleteCustomerPage.acceptAlertDeleteCustomerSuccess();
+		
+		editCustomer = homePage.clickToEditCustomer();
+		editCustomer.inputToCustomerIDTextbox(getTextCustomerID);
+		editCustomer.clickToEditCustomerSubmitButton();
+		Assert.assertTrue(editCustomer.isDeleteCustomerNotExistMessageDisplay("Customer does not exist!!"));
+		editCustomer.acceptAlertCustomerNotExist();
+	}
+	
 
 	@AfterClass
 	public void afterClass() {
