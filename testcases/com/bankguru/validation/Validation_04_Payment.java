@@ -23,7 +23,7 @@ import pageObjects.NewAccountPageObject;
 import pageObjects.RegisterPageObject;
 import pageObjects.WithdrawalPageObject;
 
-public class Validation_03_Payment {
+public class Validation_04_Payment {
 	WebDriver driver;
 	String username, password, LoginPageUrl;
 	String customerName, gender, birthday, address, city, state, pin, mobileNo, email, passwordRegister;
