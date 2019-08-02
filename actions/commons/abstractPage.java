@@ -17,6 +17,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import pageObjects.BalanceEnquiryPageObject;
+import pageObjects.DeleteAccountPageObject;
+import pageObjects.DeleteCustomerPageObject;
+import pageObjects.DepositPageObject;
+import pageObjects.EditAccountPageObject;
+import pageObjects.EditCustomerObject;
+import pageObjects.FundTransferPageObject;
+import pageObjects.NewAccountPageObject;
+import pageObjects.RegisterPageObject;
+import pageObjects.WithdrawalPageObject;
+import pageUIs.AbtractPageUI;
+
 public class abstractPage {
 	public void openUrl(WebDriver driver, String url) {
 		driver.get(url);
@@ -60,23 +72,24 @@ public class abstractPage {
 	}
 
 	public void getTextAlert(WebDriver driver, String value) {
-		driver.switchTo().alert().sendKeys(value);
+		driver.switchTo().alert().getText();
 	}
 
 	public void clickToElement(WebDriver driver, String locator) {
 		element = driver.findElement(By.xpath(locator));
 		element.click();
 	}
-
-	/*public void clickToElement(WebDriver driver, String locator, String value) {
-		element = driver.findElement(By.xpath(locator));
-		element.sendKeys(value);
-	}*/
-
+	
 	public void selectItemInDropdown(WebDriver driver, String locator, String itemText) {
 		element = driver.findElement(By.xpath(locator));
 		select = new Select(element);
 		select.selectByVisibleText(itemText);
+	}
+	
+	public void selectItemValue(WebDriver driver, String locator, String value) {
+		element = driver.findElement(By.xpath(locator));
+		select = new Select(element);
+		select.selectByValue(value);
 	}
 
 	public String getSelectItemInDropdown(WebDriver driver, String locator) {
@@ -88,17 +101,17 @@ public class abstractPage {
 	public void SelectItemDropdown(WebDriver driver, String parentLocator, String allItemsDropdown, String expectedText) throws Exception {
 		js = (JavascriptExecutor) driver;
 
-		WebElement parentElement = driver.findElement(By.xpath(parentLocator));
-		js.executeScript("arguments[0].click();", parentElement);
+		element = driver.findElement(By.xpath(parentLocator));
+		js.executeScript("arguments[0].click();", element);
 		Thread.sleep(2000);
 
 		WebDriverWait wait = new WebDriverWait(driver, longTime);
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemsDropdown)));
 
-		List<WebElement> allElement = driver.findElements(By.xpath(allItemsDropdown));
-		System.out.println("All item = " + allElement.size());
+		elements = driver.findElements(By.xpath(allItemsDropdown));
+		System.out.println("All item = " + elements.size());
 
-		for (WebElement childrenElement : allElement) {
+		for (WebElement childrenElement : elements) {
 			System.out.println("Text moi lan get =" + childrenElement.getText());
 
 			if (childrenElement.getText().contains(expectedText)) {
@@ -111,11 +124,10 @@ public class abstractPage {
 					System.out.println("Click by JS =" + childrenElement.getText());
 					js.executeScript("arguments[0].click();", childrenElement);
 				}
-
 			}
 		}
 	}
-
+	
 	public String getAtributeValue(WebDriver driver, String locator, String attributeName) {
 		element = driver.findElement(By.xpath(locator));
 		return element.getAttribute(attributeName);
@@ -140,6 +152,12 @@ public class abstractPage {
 	}
 
 	public boolean isControlDisplayed(WebDriver driver, String locator) {
+		element = driver.findElement(By.xpath(locator));
+		return element.isDisplayed();
+	}
+	
+	public boolean isControlDisplayed(WebDriver driver, String locator, String...values) {
+		locator = String.format(locator, (Object[]) values);
 		element = driver.findElement(By.xpath(locator));
 		return element.isDisplayed();
 	}
@@ -328,24 +346,26 @@ public class abstractPage {
 		byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.presenceOfElementLocated(byLocator));
 	}
-
+	
 	public void waitForElementVisible(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, longTime);
 		byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
 	}
-
+	
 	public void waitForElementClickable(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, longTime);
 		byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.elementToBeClickable(byLocator));
 	}
-
+	
 	public void waitForElementInvisible(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, longTime);
 		byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.invisibilityOfElementLocated(byLocator));
 	}
+	
+	
 
 	public void waitForAlertPresence(WebDriver driver) {
 		waitExplicit = new WebDriverWait(driver, longTime);
@@ -360,6 +380,100 @@ public class abstractPage {
 	public void clearDataInput(WebDriver driver, String locator) {
 		element = driver.findElement(By.xpath(locator));
 		element.clear();
+	}
+	
+	public RegisterPageObject openNewCustomerPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.NEW_CUSTOMER_LINK);
+		clickToElement(driver, AbtractPageUI.NEW_CUSTOMER_LINK);
+		return PageGeneratorManager.getRegisterPageObject(driver);
+	}
+	
+	public DeleteCustomerPageObject openDeleteCustomerPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.DELETE_CUSTOMER_LINK);
+		clickToElement(driver, AbtractPageUI.DELETE_CUSTOMER_LINK);
+		return PageGeneratorManager.getDeleteCustomerPage(driver);
+	}
+	
+	public EditCustomerObject openEditCustomerPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.EDIT_CUSTOMER_LINK);
+		clickToElement(driver, AbtractPageUI.EDIT_CUSTOMER_LINK);
+		return PageGeneratorManager.getEditCustomerPage(driver);
+	}
+	
+	public NewAccountPageObject openNewAccountPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.NEW_ACCOUNT_LINK);
+		clickToElement(driver, AbtractPageUI.NEW_ACCOUNT_LINK);
+		return PageGeneratorManager.getNewAccountPage(driver);
+	}
+	
+	public EditAccountPageObject openEditAccountPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.EDIT_ACCOUNT_LINK);
+		clickToElement(driver, AbtractPageUI.EDIT_ACCOUNT_LINK);
+		return PageGeneratorManager.getEditNewAccount(driver);
+	}
+	
+	public DeleteAccountPageObject openDeleteAccountPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.DELETE_ACCOUNT_LINK);
+		clickToElement(driver, AbtractPageUI.DELETE_ACCOUNT_LINK);
+		return PageGeneratorManager.getDeleteAccountPage(driver);
+	}
+
+	public DepositPageObject openDepositPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.DEPOSIT_LINK);
+		clickToElement(driver, AbtractPageUI.DEPOSIT_LINK);
+		return PageGeneratorManager.getDepositPageObject(driver);
+	}
+	
+	public WithdrawalPageObject openWithDrawalPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.WITHDRAWAL_LINK);
+		clickToElement(driver, AbtractPageUI.WITHDRAWAL_LINK);
+		return PageGeneratorManager.getWithDrawalPage(driver);
+	}
+	
+	public FundTransferPageObject openFundTransferPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.FUND_TRANSFER_LINK);
+		clickToElement(driver, AbtractPageUI.FUND_TRANSFER_LINK);
+		return PageGeneratorManager.getFundTransferPage(driver);
+	}
+	
+	public BalanceEnquiryPageObject openBalanceEnquiryPage(WebDriver driver) {
+		waitForElementVisible(driver, AbtractPageUI.BALANCE_ENQUIRY_LINK);
+		clickToElement(driver, AbtractPageUI.BALANCE_ENQUIRY_LINK);
+		return PageGeneratorManager.getBalanceEnquiryPage(driver);
+	}
+	
+	public abstractPage openPageLink(WebDriver driver, String pageName ) {
+		waitForElementInvisible(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
+		clickToElement(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
+		
+		if (pageName.equals("New Customer")){
+			return PageGeneratorManager.getRegisterPageObject(driver);
+		}else if(pageName.equals("New Account")){
+			return PageGeneratorManager.getNewAccountPage(driver);
+		}else if (pageName.equals("Deposit")){
+			return PageGeneratorManager.getDepositPageObject(driver);
+		}else{
+			return PageGeneratorManager.getHomePageObject(driver);
+		}
+	}
+	
+	public void openPageLink2(WebDriver driver, String pageName ) {
+		waitForElementInvisible(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
+		clickToElement(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
+	}
+	
+	public void clickToElement(WebDriver driver, String locator, String...values) {
+		locator = String.format(locator, (Object[]) values);
+		System.out.println("click to Locator :" + locator);
+		element = driver.findElement(By.xpath(locator));
+		element.click();
+	}
+	
+	public void waitForElementInvisible(WebDriver driver, String locator, String...values) {
+		locator = String.format(locator, (Object[]) values);
+		waitExplicit = new WebDriverWait(driver, longTime);
+		byLocator = By.xpath(locator);
+		waitExplicit.until(ExpectedConditions.invisibilityOfElementLocated(byLocator));
 	}
 	
 	WebDriverWait waitExplicit;
