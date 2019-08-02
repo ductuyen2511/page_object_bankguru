@@ -11,8 +11,11 @@ import org.testng.annotations.Test;
 
 import commons.PageGeneratorManager;
 import commons.abstractTest;
+import pageObjects.DepositPageObject;
+import pageObjects.EditAccountPageObject;
 import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
+import pageObjects.NewAccountPageObject;
 import pageObjects.RegisterPageObject;
 
 public class Account_07_RegisterAndLogin_DynamicLocatorAndRestParameter extends abstractTest {
@@ -21,6 +24,9 @@ public class Account_07_RegisterAndLogin_DynamicLocatorAndRestParameter extends 
 	LoginPageObject loginPage;
 	RegisterPageObject registerPage;
 	HomePageObject homePage;
+	DepositPageObject depositPage;
+	NewAccountPageObject newAccountPage;
+	EditAccountPageObject editAccountPage;
 
 	@Parameters("browser")
 	@BeforeClass
@@ -31,6 +37,7 @@ public class Account_07_RegisterAndLogin_DynamicLocatorAndRestParameter extends 
 
 		loginPage = PageGeneratorManager.getLoginPageObject(driver);
 		email = "ductuyen" + randomEmail() + "@gmail.com";
+
 	}
 
 	@Test
@@ -38,6 +45,7 @@ public class Account_07_RegisterAndLogin_DynamicLocatorAndRestParameter extends 
 		loginPageUrl = loginPage.getLoginPageUrl();
 		System.out.println("STEP 01 : Click to here link");
 		registerPage = loginPage.clickToHereLink();
+		//registerPage = (RegisterPageObject) loginPage.openPageLink(driver, "New Customer");
 
 		System.out.println("STEP 02 : Input to email textbox");
 		registerPage.inputToEmailTextbox(email);
@@ -52,7 +60,7 @@ public class Account_07_RegisterAndLogin_DynamicLocatorAndRestParameter extends 
 	}
 
 	@Test
-	public void TC_LoginToSystem() {
+	public void TC_02_LoginToSystem() {
 		System.out.println("STEP 01 : Open login page url");
 		loginPage = registerPage.openLoginPageUrl(loginPageUrl);
 
@@ -64,10 +72,20 @@ public class Account_07_RegisterAndLogin_DynamicLocatorAndRestParameter extends 
 		homePage = loginPage.clickToLoginButton();
 
 		System.out.println("STEP 04 : Welcom to homepage, verify welcome message");
-		Assert.assertTrue(homePage.isDisplayWelcomeMessage("Welcome To Manager's Page of Guru99 Bank"));
+		Assert.assertFalse(homePage.isDisplayWelcomeMessage("Welcome To Manager's Page of Gurus99 Bank"));
 
 		System.out.println("STEP 05 : Welcom to homepage, verify user ID");
 		Assert.assertTrue(homePage.isUserIdDisplay(username));
+	}
+	
+	@Test
+	public void TC_03_ClickToPage() {
+		newAccountPage = (NewAccountPageObject) homePage.openPageLink(driver, "New Account");
+		depositPage = (DepositPageObject) newAccountPage.openPageLink(driver, "Deposit");
+		depositPage.openPageLink2(driver, "Edit Account");
+		editAccountPage = PageGeneratorManager.getEditNewAccount(driver);
+		editAccountPage.openPageLink2(driver, "Withdrawal");
+		
 	}
 
 	@AfterClass
