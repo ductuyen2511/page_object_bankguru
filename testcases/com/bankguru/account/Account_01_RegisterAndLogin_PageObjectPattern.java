@@ -14,7 +14,7 @@ import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
 import pageObjects.RegisterPageObject;
 
-public class Account_01_RegisterAndLogin_PageObjectPattern extends abstractPage{
+public class Account_01_RegisterAndLogin_PageObjectPattern extends abstractPage {
 	WebDriver driver;
 	String email, username, password, loginPageUrl;
 	LoginPageObject loginPage;
@@ -55,7 +55,7 @@ public class Account_01_RegisterAndLogin_PageObjectPattern extends abstractPage{
 		password = registerPage.getPasswordInformation();
 	}
 
-
+	@Test
 	public void TC_LoginToSystem() {
 		System.out.println("STEP 01 : Open login page url");
 		registerPage.openLoginPageUrl(loginPageUrl);
@@ -72,19 +72,9 @@ public class Account_01_RegisterAndLogin_PageObjectPattern extends abstractPage{
 
 		System.out.println("STEP 05 : Welcom to homepage, verify user ID");
 		Assert.assertTrue(homePage.isUserIdDisplay(username));
-
 	}
 
-	@Test
-	public void TC_Dropdiwnlist() throws Exception {
-		driver.get("https://daominhdam.github.io/basic-form/index.html");
-		selectItemValue(driver, "//select[@id = 'job1']", "Mobile Tester");
-		Thread.sleep(2000);
-		selectItemValue(driver, "//select[@id = 'job1']", "Manual Tester");
-		Thread.sleep(2000);
-	}
-
-	@AfterClass(alwaysRun = true)
+	@AfterClass
 	public void afterClass() {
 		driver.quit();
 	}

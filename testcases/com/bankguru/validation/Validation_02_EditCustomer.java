@@ -1,12 +1,15 @@
 package com.bankguru.validation;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import pageObjects.EditCustomerObject;
@@ -25,9 +28,19 @@ public class Validation_02_EditCustomer {
 	EditCustomerObject editCustomer;
 	
 	String email = "ductuyen" + randomEmail() + "@gmail.com";
+	
+  @Parameters("browser")
   @BeforeClass
-  public void beforeClass() {
-	  driver = new FirefoxDriver();
+  public void initData(String browserName) {
+	  if (browserName.contains("firefox")){
+		  driver = new FirefoxDriver();
+	  }else if(browserName.contains("chrome")){
+		  System.setProperty("webdriver.chrome.driver", ".\\lib\\chromedriver.exe");
+		  driver = new ChromeDriver();
+	  }else {
+		  System.out.println("Please input correct browser name !");
+	  }
+	  driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	  
 	  loginPage = new LoginPageObject(driver);
 	  homePage = new HomePageObject(driver);

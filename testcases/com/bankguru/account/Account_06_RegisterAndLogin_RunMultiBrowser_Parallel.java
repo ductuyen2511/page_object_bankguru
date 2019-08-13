@@ -3,41 +3,39 @@ package com.bankguru.account;
 import java.util.Random;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import commons.PageGeneratorManager;
-import commons.abstractPage;
+import commons.abstractTest;
 import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
 import pageObjects.RegisterPageObject;
 
-public class Account_06_RegisterAndLogin_RunMultiBrowser_Parallel extends abstractPage {
+public class Account_06_RegisterAndLogin_RunMultiBrowser_Parallel extends abstractTest {
 	WebDriver driver;
 	String email, username, password, loginPageUrl;
 	LoginPageObject loginPage;
 	RegisterPageObject registerPage;
 	HomePageObject homePage;
 
+	@Parameters("browser")
 	@BeforeClass
-	public void beforeClass() {
-		driver = new FirefoxDriver();
-		System.out.println("driver testcase layer : " + driver.toString());
-		email = "ductuyen" + randomEmail() + "@gmail.com";
+	public void beforeClass(String browserName) {
+		driver = runMultiBrowser(browserName);
 
-		System.out.println("STEP 01 : Open Bankguru application");
-		driver.get("http://demo.guru99.com/v4/");
+		System.out.println("driver testcase layer : " + driver.toString());
 
 		loginPage = PageGeneratorManager.getLoginPageObject(driver);
-		System.out.println("STEP 02 : Get login page url");
-		loginPageUrl = loginPage.getLoginPageUrl();
+		email = "ductuyen" + randomEmail() + "@gmail.com";
 	}
 
 	@Test
 	public void TC_01_RegisterToSystem() {
+		loginPageUrl = loginPage.getLoginPageUrl();
 		System.out.println("STEP 01 : Click to here link");
 		registerPage = loginPage.clickToHereLink();
 

@@ -18,7 +18,7 @@ import pageObjects.LoginPageObject;
 import pageObjects.NewAccountPageObject;
 import pageObjects.RegisterPageObject;
 
-public class Account_08_RegisterAndLogin_ElementUndisplayed extends abstractTest {
+public class Account_09_Assert_Verify_Log_ReportHTML extends abstractTest {
 	WebDriver driver;
 	String email, username, password, loginPageUrl;
 	LoginPageObject loginPage;
@@ -51,7 +51,7 @@ public class Account_08_RegisterAndLogin_ElementUndisplayed extends abstractTest
 		loginPage.clickToSeleniumDropdown();
 
 		System.out.println("Ajax Demo Link Display");
-		Assert.assertTrue(loginPage.IsAjaxDemoLinkDisplay());
+		Assert.assertFalse(loginPage.IsAjaxDemoLinkDisplay());
 
 		System.out.println("Register Page Not Display");
 		Assert.assertTrue(loginPage.isRegisterPageUnDisplay());

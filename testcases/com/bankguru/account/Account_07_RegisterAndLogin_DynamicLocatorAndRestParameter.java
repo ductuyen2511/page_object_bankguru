@@ -82,10 +82,9 @@ public class Account_07_RegisterAndLogin_DynamicLocatorAndRestParameter extends 
 	public void TC_03_ClickToPage() {
 		newAccountPage = (NewAccountPageObject) homePage.openPageLink(driver, "New Account");
 		depositPage = (DepositPageObject) newAccountPage.openPageLink(driver, "Deposit");
-		depositPage.openPageLink2(driver, "Edit Account");
+		depositPage.openPageLinks(driver, "Edit Account");
 		editAccountPage = PageGeneratorManager.getEditNewAccount(driver);
-		editAccountPage.openPageLink2(driver, "Withdrawal");
-		
+		editAccountPage.openPageLinks(driver, "Withdrawal");
 	}
 
 	@AfterClass

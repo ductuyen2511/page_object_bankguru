@@ -9,32 +9,30 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import pageObjects.HomePageObject;
-import pageObjects.LoginPageObject;
-import pageObjects.RegisterPageObject;
+import commons.abstractPage;
+import pageFactory.HomePageFactory;
+import pageFactory.LoginPageFactory;
+import pageFactory.RegisterPageFactory;
 
-public class Account_01_RegisterAndLogin_PageOnjectPattern {
+public class Account_04_RegisterAndLogin_PageFactory extends abstractPage {
 	WebDriver driver;
 	String email, username, password, loginPageUrl;
-	LoginPageObject loginPage;
-	RegisterPageObject registerPage;
-	HomePageObject homePage;
+	LoginPageFactory loginPage;
+	RegisterPageFactory registerPage;
+	HomePageFactory homePage;
 
 	@BeforeClass
 	public void beforeClass() {
 		driver = new FirefoxDriver();
-		
+
 		System.out.println("driver testcase layer : " + driver.toString());
-		loginPage = new LoginPageObject(driver);
-		registerPage = new RegisterPageObject(driver);
-		homePage = new HomePageObject(driver);
-		
+		loginPage = new LoginPageFactory(driver);
+		registerPage = new RegisterPageFactory(driver);
+		homePage = new HomePageFactory(driver);
+
 		email = "ductuyen" + randomEmail() + "@gmail.com";
 
-		System.out.println("STEP 01 : Open Bankguru application");
 		driver.get("http://demo.guru99.com/v4/");
-
-		System.out.println("STEP 02 : Get login page url");
 		loginPageUrl = loginPage.getLoginPageUrl();
 	}
 
@@ -71,10 +69,9 @@ public class Account_01_RegisterAndLogin_PageOnjectPattern {
 
 		System.out.println("STEP 05 : Welcom to homepage, verify user ID");
 		Assert.assertTrue(homePage.isUserIdDisplay(username));
-
 	}
 
-	@AfterClass(alwaysRun = true)
+	@AfterClass
 	public void afterClass() {
 		driver.quit();
 	}

@@ -8,6 +8,7 @@ public class EditCustomerUI {
 	public static final String CUSTOMER_INPUT_BLANK_SPACE_MESSAGE = "//input[@name = 'cusid']/following-sibling::label[@id = 'message14' and text() = 'First character can not have space']";
 	public static final String EDIT_CUSTOMER_TEXT_DISPLAY = "//p[@class = 'heading3' and text() = 'Edit Customer']";
 	public static final String EDIT_CUSTOMER_SUBMIT_BUTTON = "//input[@name = 'AccSubmit']";
+	public static final String EDIT_SUBMIT_BUTTON = "//input[@type ='submit']";
 	public static final String EDIT_CUSTOMER_ADDRESS_TEXTBOX = "//textarea[@name = 'addr']";
 	public static final String EDIT_CUSTOMER_EMPTY_ADDRESS_MESSAGE = "//textarea[@name = 'addr']/following-sibling::label[@id = 'message3' and text() = 'Address Field must not be blank']";
 	public static final String EDIT_CUSTOMER_CITY_TEXTBOX = "//input[@name ='city']";
