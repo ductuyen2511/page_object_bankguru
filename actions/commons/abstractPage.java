@@ -4,8 +4,10 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -79,13 +81,13 @@ public class abstractPage {
 		element = driver.findElement(By.xpath(locator));
 		element.click();
 	}
-	
+
 	public void selectItemInDropdown(WebDriver driver, String locator, String itemText) {
 		element = driver.findElement(By.xpath(locator));
 		select = new Select(element);
 		select.selectByVisibleText(itemText);
 	}
-	
+
 	public void selectItemValue(WebDriver driver, String locator, String value) {
 		element = driver.findElement(By.xpath(locator));
 		select = new Select(element);
@@ -127,7 +129,7 @@ public class abstractPage {
 			}
 		}
 	}
-	
+
 	public String getAtributeValue(WebDriver driver, String locator, String attributeName) {
 		element = driver.findElement(By.xpath(locator));
 		return element.getAttribute(attributeName);
@@ -155,8 +157,8 @@ public class abstractPage {
 		element = driver.findElement(By.xpath(locator));
 		return element.isDisplayed();
 	}
-	
-	public boolean isControlDisplayed(WebDriver driver, String locator, String...values) {
+
+	public boolean isControlDisplayed(WebDriver driver, String locator, String... values) {
 		locator = String.format(locator, (Object[]) values);
 		element = driver.findElement(By.xpath(locator));
 		return element.isDisplayed();
@@ -346,26 +348,30 @@ public class abstractPage {
 		byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.presenceOfElementLocated(byLocator));
 	}
-	
+
 	public void waitForElementVisible(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, longTime);
 		byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
 	}
-	
+
 	public void waitForElementClickable(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, longTime);
 		byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.elementToBeClickable(byLocator));
 	}
-	
+
 	public void waitForElementInvisible(WebDriver driver, String locator) {
+		Date date = new Date();
 		waitExplicit = new WebDriverWait(driver, longTime);
 		byLocator = By.xpath(locator);
+		
+		overideTimeOutGlobal(driver, Constants.SHORT_TIME);
+		System.out.println("Start time invisible :" + date.toString());
 		waitExplicit.until(ExpectedConditions.invisibilityOfElementLocated(byLocator));
+		System.out.println("End time invisible :" + new Date().toString());
+		overideTimeOutGlobal(driver, Constants.LONG_TIME);
 	}
-	
-	
 
 	public void waitForAlertPresence(WebDriver driver) {
 		waitExplicit = new WebDriverWait(driver, longTime);
@@ -376,42 +382,42 @@ public class abstractPage {
 		element = driver.findElement(By.xpath(locator));
 		element.sendKeys(Keys.TAB);
 	}
-	
+
 	public void clearDataInput(WebDriver driver, String locator) {
 		element = driver.findElement(By.xpath(locator));
 		element.clear();
 	}
-	
+
 	public RegisterPageObject openNewCustomerPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.NEW_CUSTOMER_LINK);
 		clickToElement(driver, AbtractPageUI.NEW_CUSTOMER_LINK);
 		return PageGeneratorManager.getRegisterPageObject(driver);
 	}
-	
+
 	public DeleteCustomerPageObject openDeleteCustomerPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.DELETE_CUSTOMER_LINK);
 		clickToElement(driver, AbtractPageUI.DELETE_CUSTOMER_LINK);
 		return PageGeneratorManager.getDeleteCustomerPage(driver);
 	}
-	
+
 	public EditCustomerObject openEditCustomerPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.EDIT_CUSTOMER_LINK);
 		clickToElement(driver, AbtractPageUI.EDIT_CUSTOMER_LINK);
 		return PageGeneratorManager.getEditCustomerPage(driver);
 	}
-	
+
 	public NewAccountPageObject openNewAccountPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.NEW_ACCOUNT_LINK);
 		clickToElement(driver, AbtractPageUI.NEW_ACCOUNT_LINK);
 		return PageGeneratorManager.getNewAccountPage(driver);
 	}
-	
+
 	public EditAccountPageObject openEditAccountPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.EDIT_ACCOUNT_LINK);
 		clickToElement(driver, AbtractPageUI.EDIT_ACCOUNT_LINK);
 		return PageGeneratorManager.getEditNewAccount(driver);
 	}
-	
+
 	public DeleteAccountPageObject openDeleteAccountPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.DELETE_ACCOUNT_LINK);
 		clickToElement(driver, AbtractPageUI.DELETE_ACCOUNT_LINK);
@@ -423,59 +429,87 @@ public class abstractPage {
 		clickToElement(driver, AbtractPageUI.DEPOSIT_LINK);
 		return PageGeneratorManager.getDepositPageObject(driver);
 	}
-	
+
 	public WithdrawalPageObject openWithDrawalPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.WITHDRAWAL_LINK);
 		clickToElement(driver, AbtractPageUI.WITHDRAWAL_LINK);
 		return PageGeneratorManager.getWithDrawalPage(driver);
 	}
-	
+
 	public FundTransferPageObject openFundTransferPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.FUND_TRANSFER_LINK);
 		clickToElement(driver, AbtractPageUI.FUND_TRANSFER_LINK);
 		return PageGeneratorManager.getFundTransferPage(driver);
 	}
-	
+
 	public BalanceEnquiryPageObject openBalanceEnquiryPage(WebDriver driver) {
 		waitForElementVisible(driver, AbtractPageUI.BALANCE_ENQUIRY_LINK);
 		clickToElement(driver, AbtractPageUI.BALANCE_ENQUIRY_LINK);
 		return PageGeneratorManager.getBalanceEnquiryPage(driver);
 	}
-	
-	public abstractPage openPageLink(WebDriver driver, String pageName ) {
-		waitForElementInvisible(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
+
+	public abstractPage openPageLink(WebDriver driver, String pageName) {
+		waitForElementVisible(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
 		clickToElement(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
-		
-		if (pageName.equals("New Customer")){
+
+		if (pageName.equals("New Customer")) {
 			return PageGeneratorManager.getRegisterPageObject(driver);
-		}else if(pageName.equals("New Account")){
+		} else if (pageName.equals("New Account")) {
 			return PageGeneratorManager.getNewAccountPage(driver);
-		}else if (pageName.equals("Deposit")){
+		} else if (pageName.equals("Deposit")) {
 			return PageGeneratorManager.getDepositPageObject(driver);
-		}else{
+		} else {
 			return PageGeneratorManager.getHomePageObject(driver);
 		}
 	}
-	
-	public void openPageLink2(WebDriver driver, String pageName ) {
-		waitForElementInvisible(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
+
+	public void openPageLinks(WebDriver driver, String pageName) {
+		waitForElementVisible(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
 		clickToElement(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
 	}
-	
-	public void clickToElement(WebDriver driver, String locator, String...values) {
+
+	public void clickToElement(WebDriver driver, String locator, String... values) {
 		locator = String.format(locator, (Object[]) values);
 		System.out.println("click to Locator :" + locator);
 		element = driver.findElement(By.xpath(locator));
 		element.click();
 	}
-	
-	public void waitForElementInvisible(WebDriver driver, String locator, String...values) {
+
+	public void waitForElementVisible(WebDriver driver, String locator, String... values) {
 		locator = String.format(locator, (Object[]) values);
 		waitExplicit = new WebDriverWait(driver, longTime);
 		byLocator = By.xpath(locator);
-		waitExplicit.until(ExpectedConditions.invisibilityOfElementLocated(byLocator));
+		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
+	}
+
+	public boolean isControlUndisplayed(WebDriver driver, String locator) {
+		Date date = new Date();
+		System.out.println("Start Time :" + date.toString());
+		overideTimeOutGlobal(driver, Constants.SHORT_TIME);
+		elements = driver.findElements(By.xpath(locator));
+
+		if (elements.size() == 0) {
+			System.out.println("No Element not in DOM");
+			System.out.println("End Time :" + new Date().toString());
+			overideTimeOutGlobal(driver, Constants.LONG_TIME);
+			return true;
+		} else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
+			System.out.println("Element in DOM, Not display");
+			System.out.println("End Time :" + new Date().toString());
+			overideTimeOutGlobal(driver, Constants.LONG_TIME);
+			return true;
+		} else {
+			System.out.println("Element in DOM and display");
+			overideTimeOutGlobal(driver, Constants.LONG_TIME);
+			return false;
+		}
 	}
 	
+	
+	public void overideTimeOutGlobal(WebDriver driver, int timeout) {
+		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+	}
+
 	WebDriverWait waitExplicit;
 	WebElement element;
 	List<WebElement> elements;
