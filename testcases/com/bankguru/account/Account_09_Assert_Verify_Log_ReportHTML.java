@@ -3,7 +3,6 @@ package com.bankguru.account;
 import java.util.Random;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -33,8 +32,6 @@ public class Account_09_Assert_Verify_Log_ReportHTML extends abstractTest {
 	public void beforeClass(String browserName) {
 		driver = runMultiBrowser(browserName);
 
-		System.out.println("driver testcase layer : " + driver.toString());
-
 		loginPage = PageGeneratorManager.getLoginPageObject(driver);
 		email = "ductuyen" + randomEmail() + "@gmail.com";
 
@@ -42,59 +39,62 @@ public class Account_09_Assert_Verify_Log_ReportHTML extends abstractTest {
 
 	@Test
 	public void TC_01_ElementDisplay() {
-		System.out.println("Login Form Display");
-		Assert.assertTrue(loginPage.IsLoginFormDisplay());
+		log.info("Resgiter - STEP 01 : Verify login Page is Displayed");
+		verifyTrue(loginPage.IsLoginFormDisplay());
 
-		System.out.println("Ajax Demo Link Not Display");
-		Assert.assertTrue(loginPage.IsAjaxDemoLinkUnDisplay());
-
+		log.info("Resgiter - STEP 02 : Verify Ajax Demo Link is Displayed");
+		verifyTrue(loginPage.IsAjaxDemoLinkUnDisplay());
+		
+		log.info("Resgiter - STEP 03 : Click to selenium dropdown");
 		loginPage.clickToSeleniumDropdown();
 
-		System.out.println("Ajax Demo Link Display");
-		Assert.assertFalse(loginPage.IsAjaxDemoLinkDisplay());
+		log.info("Resgiter - STEP 04 : Ajax Demo Link Display");
+		//expected failed
+		verifyFalse(loginPage.IsAjaxDemoLinkDisplay());
 
-		System.out.println("Register Page Not Display");
-		Assert.assertTrue(loginPage.isRegisterPageUnDisplay());
-		
-		System.out.println("Home Page Not Display");
-		Assert.assertTrue(loginPage.isHomePageUnDisplay());
+		log.info("Resgiter - STEP 05 : Register Page Not Display");
+		verifyTrue(loginPage.isRegisterPageUnDisplay());
+
+		log.info("Resgiter - STEP 06 : Home Page Not Display");
+		verifyTrue(loginPage.isHomePageUnDisplay());
 
 	}
 
+	@Test
 	public void TC_02_RegisterToSystem() {
 		loginPageUrl = loginPage.getLoginPageUrl();
-		System.out.println("STEP 01 : Click to here link");
+		
+		log.info("STEP 01 : Click to here link");
 		registerPage = loginPage.clickToHereLink();
-		// registerPage = (RegisterPageObject) loginPage.openPageLink(driver, "New
-		// Customer");
 
-		System.out.println("STEP 02 : Input to email textbox");
+		log.info("STEP 02 : Input to email textbox");
 		registerPage.inputToEmailTextbox(email);
 
-		System.out.println("STEP 03 : Click to submit button");
+		log.info("STEP 03 : Click to submit button");
 		registerPage.clickToSubmitButton();
 
-		System.out.println("STEP 04 : Get username/password");
+		log.info("STEP 04 : Get username/password");
 		username = registerPage.getUsernameInformation();
 		password = registerPage.getPasswordInformation();
 	}
 
+	@Test
 	public void TC_03_LoginToSystem() {
-		System.out.println("STEP 01 : Open login page url");
+		log.info("Login - STEP 01 : Open login page url");
 		loginPage = registerPage.openLoginPageUrl(loginPageUrl);
 
-		System.out.println("STEP 02 : Input username & password");
+		log.info("Login - STEP 02 : Input username & password");
 		loginPage.inputToUserIdTextbox(username);
 		loginPage.inputPasswordTextbox(password);
 
-		System.out.println("STEP 03 : Click to login button");
+		log.info("Login - STEP 03 : Click to login button");
 		homePage = loginPage.clickToLoginButton();
 
-		System.out.println("STEP 04 : Welcom to homepage, verify welcome message");
-		Assert.assertFalse(homePage.isDisplayWelcomeMessage("Welcome To Manager's Page of Gurus99 Bank"));
+		log.info("Login - STEP 04 : Welcom to homepage, verify welcome message");
+		verifyFalse(homePage.isDisplayWelcomeMessage("Welcome To Manager's Page of Gurus99 Bank"));
 
-		System.out.println("STEP 05 : Welcom to homepage, verify user ID");
-		Assert.assertTrue(homePage.isUserIdDisplay(username));
+		log.info("Login - STEP 05 : Welcom to homepage, verify user ID");
+		verifyTrue(homePage.isUserIdDisplay(username));
 	}
 
 	@AfterClass

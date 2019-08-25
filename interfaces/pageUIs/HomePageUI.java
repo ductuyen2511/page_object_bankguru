@@ -1,7 +1,7 @@
 package pageUIs;
 
 public class HomePageUI {
-	public static final String WELCOME_MESSAGE = "//marquee[@class = 'heading3']";
+	public static final String WELCOME_MESSAGE = "//marquee[@class = 'heading3' and text() = \"Welcome To Manager's Page of Guru99 Bank\"]";
 	public static final String USER_ID_TEXT = "//tr[@class = 'heading3']/child::td";
 	public static final String NEW_CUSTOMER_LINK = "//a[text() = 'New Customer']";
 	public static final String EDIT_CUSTOMER_LINK = "//a[text() ='Edit Customer']";

@@ -7,8 +7,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.bankguru.common.Common_01_RegisterToSystem;
-
 import commons.PageGeneratorManager;
 import commons.abstractTest;
 import pageObjects.DepositPageObject;

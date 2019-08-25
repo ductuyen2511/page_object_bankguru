@@ -16,4 +16,12 @@ public class AbtractPageUI {
 	
 	public static final String DYNAMIC_LINK = "//a[text() = '%s']";
 	
+	public static final String DYNAMIC_INPUT_TEXTBOX = "//input[@name = '%s']";
+	public static final String DYNAMIC_RADIO_BUTTON = "//input[@value = '%s']";
+	public static final String DYNAMIC_INPUT_TEXT_AREA = "//textarea[@name = '%s']";
+	public static final String DYNAMIC_SUBMIT_BUTTON = "//input[@value = '%s']";
+	
+	
+	public static final String DYNAMIC_ERROR_MESSAGE = "//td[text() = '%s']/following-sibling::td//label";
+	
 }
