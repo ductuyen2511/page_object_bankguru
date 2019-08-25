@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="BANKGURU" parallel="false">
-  <test name="Test">
-    <classes>
-      <class name="com.bankguru.account.Account_01_RegisterAndLogin_PageOnjectPattern"/>
-    </classes>
-  </test> 
+	
+	<listeners>
+		<listener class-name = "org.uncommons.reportng.HTMLReporter" />
+		<listener class-name = "org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name = "commons.ExtentReportListener" />
+	</listeners>
+	
+	<test name="run for Firefox">
+	<parameter name = "browser" value = "firefox" />
+		<classes>
+			<class name="com.bankguru.account.Account_09_Assert_Verify_Log_ReportHTML" />
+		</classes>
+	</test>
+	
+<!-- 	<test name="run for Chrome"> -->
+<!-- 	<parameter name = "browser" value = "chrome" /> -->
+<!-- 		<classes> -->
+<!-- 			<class -->
+<!-- 				name="com.bankguru.validation.Validation_03_DeleteCustomer" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+	
+<!-- 	<test name="run for ChromeHeadless"> -->
+<!-- 	<parameter name = "browser" value = "chromeheadless" /> -->
+<!-- 		<classes> -->
+<!-- 			<class -->
+<!-- 				name="com.bankguru.validation.Validation_03_DeleteCustomer" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
 </suite>
