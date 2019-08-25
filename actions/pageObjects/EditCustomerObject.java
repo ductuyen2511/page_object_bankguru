@@ -51,6 +51,7 @@ public class EditCustomerObject extends abstractPage{
 	}
 
 	public void clickToEditCustomerSubmitButton() {
+		waitForElementVisible(driver, EditCustomerUI.EDIT_CUSTOMER_SUBMIT_BUTTON);
 		clickToElement(driver, EditCustomerUI.EDIT_CUSTOMER_SUBMIT_BUTTON);
 	}
 
@@ -197,5 +198,22 @@ public class EditCustomerObject extends abstractPage{
 	public boolean isEditCustomerInputInvalidEmailDisplay(String expectedText) {
 		String actualText = getTextElement(driver, EditCustomerUI.EDIT_CUSTOMER_INPUT_INVALID_EMAIL_TEXTBOX);
 		return actualText.equals(expectedText);
+	}
+
+	public void inputToAddressTextbox(String addressEdit) {
+		senkeyToElement(driver, EditCustomerUI.EDIT_CUSTOMER_ADDRESS_TEXTBOX, addressEdit);
+	}
+
+	public void clickToEditSubmitButton() {
+		clickToElement(driver, EditCustomerUI.EDIT_SUBMIT_BUTTON);
+	}
+
+	public boolean isDeleteCustomerNotExistMessageDisplay(String expectedText) {
+		String actualText = getTextAlert(driver);
+		return actualText.equals(expectedText);
+	}
+
+	public void acceptAlertCustomerNotExist() {
+		acceptAlert(driver);
 	}
 }

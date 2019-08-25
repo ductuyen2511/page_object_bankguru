@@ -137,6 +137,12 @@ public class abstractPage {
 
 	public String getTextElement(WebDriver driver, String locator) {
 		element = driver.findElement(By.xpath(locator));
+		return element.getText();
+	}
+	
+	public String getTextDynamicElement(WebDriver driver, String locator, String...values) {
+		locator = String.format(locator, (Object[]) values);
+		element = driver.findElement(By.xpath(locator));
 		System.out.println("actual text :" + element.getText());
 		return element.getText();
 	}
@@ -240,6 +246,19 @@ public class abstractPage {
 		action = new Actions(driver);
 		action.sendKeys(element, key).perform();
 	}
+	
+	public void senkeyBoardToDynamicElement(WebDriver driver, String locator, Keys key, String...values) {
+		locator = String.format(locator, (Object[]) values);
+		element = driver.findElement(By.xpath(locator));
+		action = new Actions(driver);
+		action.sendKeys(element, key).perform();
+	}
+	
+	public void senkeyToDynamicElement(WebDriver driver, String locator, String valueSenkey, String...values) {
+		locator = String.format(locator, (Object[]) values);
+		element = driver.findElement(By.xpath(locator));
+		element.sendKeys(valueSenkey);
+	}
 
 	public void dragAndDrop(WebDriver driver, String locator) {
 		element = driver.findElement(By.xpath(locator));
@@ -254,7 +273,7 @@ public class abstractPage {
 
 	public void uploadMultiFileSenkey(WebDriver driver, String locator, String value) {
 		element = driver.findElement(By.xpath(locator));
-		element.sendKeys("' + value + '");
+		element.sendKeys('"' + value + '"');
 	}
 
 	public void uploadFileByAutoIt(WebDriver driver, String locator, String chromePath, String firefoxPath, String value) throws Exception {
@@ -313,17 +332,20 @@ public class abstractPage {
 		}
 	}
 
-	public Object clicktoElementByJS(WebDriver driver, WebElement element) {
+	public Object clicktoElementByJS(WebDriver driver, String locator) {
+		element = driver.findElement(By.xpath(locator));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		return js.executeScript("arguments[0].click();", element);
 	}
 
-	public Object scrollToElement(WebDriver driver, WebElement element) {
+	public Object scrollToElement(WebDriver driver, String locator) {
+		element = driver.findElement(By.xpath(locator));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		return js.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
 
-	public Object senkeyToElementByJS(WebDriver driver, WebElement element, String value) {
+	public Object senkeyToElementByJS(WebDriver driver, String locator, String value) {
+		element = driver.findElement(By.xpath(locator));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		return js.executeScript("arguments[0].setAttribute('value', '" + value + "');", element);
 	}
@@ -362,14 +384,14 @@ public class abstractPage {
 	}
 
 	public void waitForElementInvisible(WebDriver driver, String locator) {
-		Date date = new Date();
+		//Date date = new Date();
 		waitExplicit = new WebDriverWait(driver, longTime);
 		byLocator = By.xpath(locator);
 		
 		overideTimeOutGlobal(driver, Constants.SHORT_TIME);
-		System.out.println("Start time invisible :" + date.toString());
+		//System.out.println("Start time invisible :" + date.toString());
 		waitExplicit.until(ExpectedConditions.invisibilityOfElementLocated(byLocator));
-		System.out.println("End time invisible :" + new Date().toString());
+		//System.out.println("End time invisible :" + new Date().toString());
 		overideTimeOutGlobal(driver, Constants.LONG_TIME);
 	}
 
@@ -483,19 +505,19 @@ public class abstractPage {
 	}
 
 	public boolean isControlUndisplayed(WebDriver driver, String locator) {
-		Date date = new Date();
-		System.out.println("Start Time :" + date.toString());
+	//	Date date = new Date();
+		//System.out.println("Start Time :" + date.toString());
 		overideTimeOutGlobal(driver, Constants.SHORT_TIME);
 		elements = driver.findElements(By.xpath(locator));
 
 		if (elements.size() == 0) {
 			System.out.println("No Element not in DOM");
-			System.out.println("End Time :" + new Date().toString());
+			//System.out.println("End Time :" + new Date().toString());
 			overideTimeOutGlobal(driver, Constants.LONG_TIME);
 			return true;
 		} else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
 			System.out.println("Element in DOM, Not display");
-			System.out.println("End Time :" + new Date().toString());
+			//System.out.println("End Time :" + new Date().toString());
 			overideTimeOutGlobal(driver, Constants.LONG_TIME);
 			return true;
 		} else {
@@ -504,8 +526,7 @@ public class abstractPage {
 			return false;
 		}
 	}
-	
-	
+		
 	public void overideTimeOutGlobal(WebDriver driver, int timeout) {
 		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
 	}

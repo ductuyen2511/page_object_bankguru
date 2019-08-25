@@ -1,5 +1,6 @@
 package commons;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
@@ -38,7 +39,6 @@ public class abstractTest extends abstractPage {
 		} else {
 			System.out.println("Please Choose the incorrect browser ");
 		}
-		System.out.println("Driver Abtract test : " + driver.toString());
 		driver.get("http://demo.guru99.com/v4/");
 		driver.manage().timeouts().implicitlyWait(Constants.LONG_TIME, TimeUnit.SECONDS);
 		return driver;
@@ -66,6 +66,10 @@ public class abstractTest extends abstractPage {
 		return checkPassed(condition);
 	}
 
+	protected boolean verifyFalse(boolean condition) {
+		return checkFailed(condition);
+	}
+	
 	private boolean checkFailed(boolean condition) {
 		boolean pass = true;
 		try {
@@ -80,10 +84,6 @@ public class abstractTest extends abstractPage {
 			Reporter.getCurrentTestResult().setThrowable(e);
 		}
 		return pass;
-	}
-
-	protected boolean verifyFalse(boolean condition) {
-		return checkFailed(condition);
 	}
 
 	private boolean checkEquals(Object actual, Object expected) {
@@ -117,5 +117,10 @@ public class abstractTest extends abstractPage {
 
 	protected boolean verifyEquals(Object actual, Object expected) {
 		return checkEquals(actual, expected);
+	}
+	
+	protected int randomEmail() {
+		Random random = new Random();
+		return random.nextInt(999999);
 	}
 }
