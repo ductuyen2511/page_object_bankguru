@@ -4,7 +4,7 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
-import java.util.Date;
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -489,7 +489,18 @@ public class abstractPage {
 		waitForElementVisible(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
 		clickToElement(driver, AbtractPageUI.DYNAMIC_LINK, pageName);
 	}
+	
+	public void openPageLinkLiveGuru(WebDriver driver, String pageName) {
+		waitForElementVisible(driver, AbtractPageUI.DYNAMIC_PAGE_LIVEGURU, pageName);
+		clickToElement(driver, AbtractPageUI.DYNAMIC_PAGE_LIVEGURU, pageName);
+	}
 
+	public void hoverToDynamicPageLiveGuru(WebDriver driver, String locator, String...values) {
+		locator = String.format(locator, (Object[]) values);
+		element = driver.findElement(By.xpath(locator));
+		action = new Actions(driver);
+		action.moveToElement(element).perform();;
+	}
 	public void clickToElement(WebDriver driver, String locator, String... values) {
 		locator = String.format(locator, (Object[]) values);
 		System.out.println("click to Locator :" + locator);
@@ -530,6 +541,29 @@ public class abstractPage {
 	public void overideTimeOutGlobal(WebDriver driver, int timeout) {
 		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
 	}
+	
+	public void checkPopupDisplay(WebDriver driver, String locatorPopup, String locatorCloseButton) {
+		List<WebElement> popup = driver.findElements(By.xpath(locatorPopup));
+		WebElement clostButton = driver.findElement(By.xpath(locatorCloseButton));
+		
+		if(popup.size() > 0 && popup.get(0).isDisplayed()) {
+			clostButton.click();
+		}
+	}
+	
+	public boolean isFileDownloaded(String downloadPath, String fileName) {
+		  File dir = new File(downloadPath);
+		  File[] dirContents = dir.listFiles();
+
+		  for (int i = 0; i < dirContents.length; i++) {
+		      if (dirContents[i].getName().equals(fileName)) {
+		          // File has been found, it can now be deleted:
+		          dirContents[i].delete();
+		          return true;
+		      }
+		          }
+		      return false;
+		  }
 
 	WebDriverWait waitExplicit;
 	WebElement element;
