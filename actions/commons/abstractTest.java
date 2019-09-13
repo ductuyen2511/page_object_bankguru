@@ -1,5 +1,7 @@
 package commons;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -9,13 +11,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.Assert;
 import org.testng.Reporter;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class abstractTest extends abstractPage {
 	WebDriver driver;
 	
 	protected final Log log;
+	private final String workingDir = System.getProperty("user.dir");
 	
 	protected abstractTest() {
 		log = LogFactory.getLog(getClass());
@@ -25,10 +31,34 @@ public class abstractTest extends abstractPage {
 	public WebDriver runMultiBrowser(String browserName) {
 		// System.out.println("rootname :" + rootName);
 		if (browserName.equalsIgnoreCase("firefox")) {
-			driver = new FirefoxDriver();
-		} else if (browserName.equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
-			driver = new ChromeDriver();
+			System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true");
+			System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, workingDir + "\\Firefoxlog.txt");
+			WebDriverManager.firefoxdriver().setup();
+			//driver = new FirefoxDriver();
+			FirefoxOptions option = new FirefoxOptions();
+			option.addArguments("disable-infobars");
+			option.addArguments("disable-geolocation");
+			driver = new FirefoxDriver(option);
+		}
+		else if (browserName.equalsIgnoreCase("firefoxheadless")) {
+			System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE,"true");
+			System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, workingDir + "\\Firefoxlog.txt");
+			WebDriverManager.firefoxdriver().setup();
+			FirefoxOptions option = new FirefoxOptions();
+			option.setHeadless(true);
+			driver = new FirefoxDriver(option);
+		}else if (browserName.equalsIgnoreCase("chrome")) {
+			//System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
+			WebDriverManager.chromedriver().setup();
+			ChromeOptions option = new ChromeOptions();
+//			option.addArguments("--disable-extensions");
+//			option.addArguments("disable-infobars");
+//			option.addArguments("start-maximized");
+//			option.addArguments("disable-geolocation");
+//			option.addArguments("--disable-notifications");
+			option.setExperimentalOption("useAutomationExtension", false);
+			option.setExperimentalOption("excludeSwitches",Collections.singletonList("enable-automation"));
+			driver = new ChromeDriver(option);
 			// System.out.print("rootname : " + rootName);
 		} else if (browserName.equalsIgnoreCase("chromeheadless")) {
 			System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
@@ -36,7 +66,8 @@ public class abstractTest extends abstractPage {
 			options.addArguments("headless");
 			options.addArguments("window-size=1366x768");
 			driver = new ChromeDriver(options);
-		} else {
+		}
+		else {
 			System.out.println("Please Choose the incorrect browser ");
 		}
 		driver.get("http://live.guru99.com/index.php/backendlogin");

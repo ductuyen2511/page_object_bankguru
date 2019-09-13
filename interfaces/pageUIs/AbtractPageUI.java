@@ -23,5 +23,6 @@ public class AbtractPageUI {
 	
 	
 	public static final String DYNAMIC_ERROR_MESSAGE = "//td[text() = '%s']/following-sibling::td//label";
+	public static final String DYNAMIC_PAGE_LIVEGURU = "//ul[@id = 'nav']//span[text() = '%s']";
 	
 }

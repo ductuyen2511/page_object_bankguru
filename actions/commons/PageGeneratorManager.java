@@ -3,6 +3,7 @@ package commons;
 import org.openqa.selenium.WebDriver;
 
 import pageObjects.BalanceEnquiryPageObject;
+import pageObjects.CustomerPageLiveGuruObject;
 import pageObjects.DeleteAccountPageObject;
 import pageObjects.DeleteCustomerPageObject;
 import pageObjects.DepositPageObject;
@@ -10,8 +11,10 @@ import pageObjects.EditAccountPageObject;
 import pageObjects.EditCustomerObject;
 import pageObjects.FundTransferPageObject;
 import pageObjects.HomePageObject;
+import pageObjects.LoginPageLiveGuruObject;
 import pageObjects.LoginPageObject;
 import pageObjects.NewAccountPageObject;
+import pageObjects.OrderPageLiveGuruObject;
 import pageObjects.RegisterPageObject;
 import pageObjects.WithdrawalPageObject;
 
@@ -63,4 +66,18 @@ public class PageGeneratorManager {
 	public static DeleteCustomerPageObject getDeleteCustomerPage(WebDriver driver) {
 		return new DeleteCustomerPageObject(driver);
 	}
+	
+	public static LoginPageLiveGuruObject getLoginPageLiveGuru(WebDriver driver) {
+		return new LoginPageLiveGuruObject(driver);
+	}
+	
+	public static CustomerPageLiveGuruObject getCustomerPageLiveGuru(WebDriver driver) {
+		return new CustomerPageLiveGuruObject(driver);
+	}
+	
+	public static OrderPageLiveGuruObject getOrderPageLiveGuru(WebDriver driver) {
+		return new OrderPageLiveGuruObject(driver);
+	}
 }
+
+
